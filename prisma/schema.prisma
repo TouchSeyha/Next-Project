@@ -10,51 +10,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Post      Post[]
-  Comment   Comment[]
-  Like      Like[]
+model Customer {
+  id         String      @id @default(uuid())
+  name       String
+  email      String?
+  phone      String?
+  address    String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  quotations Quotation[]
+  invoices   Invoice[]
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  published Boolean  @default(false)
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author  User      @relation(fields: [authorId], references: [id])
-  Comment Comment[]
-  Like    Like[]
+model Quotation {
+  id         String    @id @default(uuid())
+  number     String    @unique
+  date       DateTime
+  validUntil DateTime
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  subtotal   Float
+  taxRate    Float
+  taxAmount  Float
+  total      Float
+  notes      String?
+  status     String    // Draft, Sent, Accepted, Rejected, Expired
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  items      Item[]    @relation("QuotationItems")
+  invoices   Invoice[] // Invoices generated from this quotation
 }
 
-model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  postId    Int
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  post   Post @relation(fields: [postId], references: [id])
-  author User @relation(fields: [authorId], references: [id])
+model Invoice {
+  id          String    @id @default(uuid())
+  number      String    @unique
+  date        DateTime
+  dueDate     DateTime
+  quotationId String?
+  quotation   Quotation? @relation(fields: [quotationId], references: [id])
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  subtotal    Float
+  taxRate     Float
+  taxAmount   Float
+  total       Float
+  amountPaid  Float     @default(0)
+  balance     Float
+  notes       String?
+  status      String    
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  items       Item[]    @relation("InvoiceItems")
 }
 
-model Like {
-  id        Int      @id @default(autoincrement())
-  postId    Int
-  userId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  post Post @relation(fields: [postId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+model Item {
+  id          String    @id @default(uuid())
+  description String
+  quantity    Float
+  price       Float
+  amount      Float
+  quotationId String?
+  quotation   Quotation? @relation("QuotationItems", fields: [quotationId], references: [id])
+  invoiceId   String?
+  invoice     Invoice?   @relation("InvoiceItems", fields: [invoiceId], references: [id])
 }
