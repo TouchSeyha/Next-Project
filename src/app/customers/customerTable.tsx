@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation"
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
-import { deleteCustomer } from "../actions/customers"
+import { deleteCustomer } from "../../lib/customers"
 import { Customer } from "../types/customer"
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal"
 

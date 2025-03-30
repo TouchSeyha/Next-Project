@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { createCustomer, updateCustomer } from "../actions/customers"
+import { createCustomer, updateCustomer } from "../../lib/customers"
 import { Customer } from "../types/customer"
 
 interface CustomerFormProps {

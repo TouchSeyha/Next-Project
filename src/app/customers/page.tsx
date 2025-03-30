@@ -5,7 +5,7 @@ import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import CustomerTable from "./customerTable"
 import { Button } from "@headlessui/react"
 import CustomerTableSkeleton from "./customerTableSkeleton"
-import { getCustomers } from "../actions/customers"
+import { getCustomers } from "../../lib/customers"
 import CustomerForm from "./customerForm"
 import { Customer } from "../types/customer"
 
