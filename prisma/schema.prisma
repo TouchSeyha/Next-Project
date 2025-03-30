@@ -34,11 +34,11 @@ model Quotation {
   taxAmount  Float
   total      Float
   notes      String?
-  status     String // Draft, Sent, Accepted, Rejected, Expired
+  status     String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   items      Item[]    @relation("QuotationItems")
-  invoices   Invoice[] // Invoices generated from this quotation
+  invoices   Invoice[]
 }
 
 model Invoice {
