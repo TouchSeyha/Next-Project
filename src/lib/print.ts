@@ -1,18 +1,18 @@
 import { Invoice } from "@/app/types/invoice";
 import { Quotation } from "@/app/types/quotation";
 
-export function formatDate(date: Date) {
+export function formatDate(date: Date): string {
   return new Date(date).toLocaleDateString();
 }
 
-export function formatCurrency(amount: number) {
+export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   }).format(amount);
 }
 
-export function printQuotation(quotation: Quotation) {
+export function printQuotation(quotation: Quotation): void {
   const printWindow = window.open("", "_blank", "width=800,height=600");
   
   if (!printWindow) {
@@ -165,7 +165,7 @@ export function printQuotation(quotation: Quotation) {
   };
 }
 
-export function printInvoice(invoice: Invoice) {
+export function printInvoice(invoice: Invoice): void {
   const printWindow = window.open("", "_blank", "width=800,height=600");
   
   if (!printWindow) {
