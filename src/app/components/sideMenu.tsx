@@ -32,7 +32,7 @@ const user = {
   name: "Touch Seyha",
   email: "example@gmail.com",
   image:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0",
 }
 
 function classNames(
@@ -78,8 +78,8 @@ export default function SideMenu() {
               <div className="flex h-16 shrink-0 items-center">
                 <img
                   alt="Your Company"
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                  className="h-8 w-auto"
+                  src="https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0"
+                  className="h-8 w-8"
                 />
               </div>
               <nav className="flex flex-1 flex-col">
@@ -121,7 +121,7 @@ export default function SideMenu() {
           <div className="flex h-16 shrink-0 items-center">
             <img
               alt="Your Company"
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+              src="https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0"
               className="h-8 w-auto"
             />
           </div>
