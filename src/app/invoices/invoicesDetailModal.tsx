@@ -2,6 +2,7 @@
 
 import { XMarkIcon } from "@heroicons/react/24/outline"
 import { Invoice } from "../types/invoice"
+import { formatDate, formatCurrency } from "@/lib/print"
 
 interface InvoiceDetailModalProps {
   invoice: Invoice | null
@@ -15,17 +16,6 @@ export default function InvoiceDetailModal({
   onClose,
 }: InvoiceDetailModalProps) {
   if (!isOpen || !invoice) return null
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString()
-  }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount)
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-brightness-50">

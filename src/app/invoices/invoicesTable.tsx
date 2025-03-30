@@ -29,17 +29,20 @@ export function InvoiceTable({
   const [invoiceToView, setInvoiceToView] = useState<Invoice | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  const openDeleteModal = (invoice: Invoice, e: React.MouseEvent) => {
+  const openDeleteModal = (
+    invoice: Invoice,
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     e.stopPropagation()
     setInvoiceToDelete(invoice)
   }
 
-  const closeDeleteModal = () => {
+  const closeDeleteModal = (): void => {
     setInvoiceToDelete(null)
     setDeleteError(null)
   }
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = async (): Promise<void> => {
     if (!invoiceToDelete) return
 
     const id = invoiceToDelete.id
@@ -60,22 +63,31 @@ export function InvoiceTable({
     }
   }
 
-  const handleEditClick = (invoice: Invoice, e: React.MouseEvent) => {
+  const handleEditClick = (
+    invoice: Invoice,
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     e.stopPropagation()
     onEdit(invoice)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  const handleViewDetails = (invoice: Invoice, e: React.MouseEvent) => {
+  const handleViewDetails = (
+    invoice: Invoice,
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     e.stopPropagation()
     setInvoiceToView(invoice)
   }
 
-  const closeDetailModal = () => {
+  const closeDetailModal = (): void => {
     setInvoiceToView(null)
   }
 
-  const handlePrint = (invoice: Invoice, e: React.MouseEvent) => {
+  const handlePrint = (
+    invoice: Invoice,
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
     e.stopPropagation()
     printInvoice(invoice)
   }

@@ -6,16 +6,17 @@ import { getQuotations, getCustomers } from "@/lib/quotations"
 import { Button } from "@headlessui/react"
 import { QuotationTable } from "./quotationTable"
 import { QuotationForm } from "./quotationForm"
-import { Customer } from "../types/quotation"
-import { Quotation } from "../types/quotation"
+import { Customer, Quotation } from "../types/quotation"
 
-export default function Quotations({}) {
-  const [isFormVisible, setIsFormVisible] = useState(false)
-  const [refreshKey, setRefreshKey] = useState(0)
+export default function Quotations() {
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false)
+  const [refreshKey, setRefreshKey] = useState<number>(0)
   const [quotations, setQuotations] = useState<Quotation[]>([])
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [loading, setLoading] = useState(true)
-  const [editingQuotation, setEditingQuotation] = useState(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [editingQuotation, setEditingQuotation] = useState<Quotation | null>(
+    null
+  )
 
   useEffect(() => {
     const loadData = async () => {
@@ -35,22 +36,22 @@ export default function Quotations({}) {
     loadData()
   }, [refreshKey])
 
-  const handleQuotationAdded = () => {
+  const handleQuotationAdded = (): void => {
     setIsFormVisible(false)
     setEditingQuotation(null)
     setRefreshKey((prevKey) => prevKey + 1)
   }
 
-  const handleEditQuotation = (quotation) => {
+  const handleEditQuotation = (quotation: Quotation): void => {
     setEditingQuotation(quotation)
     setIsFormVisible(true)
   }
 
-  const handleDeleteQuotation = () => {
+  const handleDeleteQuotation = (): void => {
     setRefreshKey((prevKey) => prevKey + 1)
   }
 
-  const handleCancelForm = () => {
+  const handleCancelForm = (): void => {
     setIsFormVisible(false)
     setEditingQuotation(null)
   }
