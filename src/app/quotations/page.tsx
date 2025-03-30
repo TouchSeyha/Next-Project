@@ -1,4 +1,5 @@
-import quotations from "@/app/data/data.json";
+// import quotations from "@/app/data/data.json";
+
 
 export const metadata = {
   title: "Quotations",
