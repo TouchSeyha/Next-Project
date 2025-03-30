@@ -1,8 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline"
+import {
+  PencilIcon,
+  TrashIcon,
+  EyeIcon,
+  PrinterIcon,
+} from "@heroicons/react/24/outline"
 import { deleteQuotation } from "@/lib/quotations"
+import { printQuotation, formatDate, formatCurrency } from "@/lib/print"
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal"
 import QuotationDetailModal from "./quotationDetailModal"
 
@@ -17,6 +23,9 @@ type Item = {
 type Customer = {
   id: string
   name: string
+  email?: string
+  phone?: string
+  address?: string
 }
 
 type Quotation = {
@@ -53,17 +62,6 @@ export function QuotationTable({
   )
   const [quotationToView, setQuotationToView] = useState<Quotation | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString()
-  }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount)
-  }
 
   const openDeleteModal = (quotation: Quotation, e: React.MouseEvent) => {
     e.stopPropagation()
@@ -109,6 +107,11 @@ export function QuotationTable({
 
   const closeDetailModal = () => {
     setQuotationToView(null)
+  }
+
+  const handlePrint = (quotation: Quotation, e: React.MouseEvent) => {
+    e.stopPropagation()
+    printQuotation(quotation)
   }
 
   return (
@@ -203,6 +206,13 @@ export function QuotationTable({
                         className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
                       >
                         <EyeIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={(e) => handlePrint(quotation, e)}
+                        title="Print Quotation"
+                        className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors"
+                      >
+                        <PrinterIcon className="h-5 w-5" />
                       </button>
                       <button
                         onClick={(e) => handleEditClick(quotation, e)}

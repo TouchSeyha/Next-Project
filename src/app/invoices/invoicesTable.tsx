@@ -1,8 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline"
+import {
+  PencilIcon,
+  TrashIcon,
+  EyeIcon,
+  PrinterIcon,
+} from "@heroicons/react/24/outline"
 import { deleteInvoice } from "@/lib/invoices"
+import { printInvoice, formatDate, formatCurrency } from "@/lib/print"
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal"
 import InvoiceDetailModal from "./invoicesDetailModal"
 import { Invoice } from "../types/invoice"
@@ -22,17 +28,6 @@ export function InvoiceTable({
   const [invoiceToDelete, setInvoiceToDelete] = useState<Invoice | null>(null)
   const [invoiceToView, setInvoiceToView] = useState<Invoice | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString()
-  }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount)
-  }
 
   const openDeleteModal = (invoice: Invoice, e: React.MouseEvent) => {
     e.stopPropagation()
@@ -78,6 +73,11 @@ export function InvoiceTable({
 
   const closeDetailModal = () => {
     setInvoiceToView(null)
+  }
+
+  const handlePrint = (invoice: Invoice, e: React.MouseEvent) => {
+    e.stopPropagation()
+    printInvoice(invoice)
   }
 
   return (
@@ -181,6 +181,13 @@ export function InvoiceTable({
                         className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
                       >
                         <EyeIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={(e) => handlePrint(invoice, e)}
+                        title="Print Invoice"
+                        className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors"
+                      >
+                        <PrinterIcon className="h-5 w-5" />
                       </button>
                       <button
                         onClick={(e) => handleEditClick(invoice, e)}

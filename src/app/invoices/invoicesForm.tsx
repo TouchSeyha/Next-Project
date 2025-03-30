@@ -52,7 +52,6 @@ export function InvoiceForm({
       : [{ id: "", description: "", quantity: 1, price: 0, amount: 0 }]
   )
 
-  // Recalculate financial values when items or tax rate changes
   useEffect(() => {
     // Calculate subtotal
     const newSubtotal = items.reduce((sum, item) => sum + item.amount, 0)
@@ -83,7 +82,6 @@ export function InvoiceForm({
     const { name, value } = e.target
 
     if (name === "amountPaid") {
-      // When amount paid changes, recalculate balance
       const amountPaid = parseFloat(value) || 0
       setFormData((prev) => ({
         ...prev,
@@ -101,11 +99,9 @@ export function InvoiceForm({
   ) => {
     const newItems = [...items]
 
-    // Update the field
     if (field === "quantity" || field === "price") {
       newItems[index][field as "quantity" | "price"] = Number(value)
 
-      // Auto-calculate amount
       newItems[index].amount = newItems[index].quantity * newItems[index].price
     } else if (field === "description") {
       newItems[index][field] = value as string
@@ -143,12 +139,10 @@ export function InvoiceForm({
     try {
       const formDataToSubmit = new FormData()
 
-      // Add basic invoice fields
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSubmit.append(key, String(value))
       })
 
-      // Add items
       items.forEach((item) => {
         formDataToSubmit.append("itemDescription", item.description)
         formDataToSubmit.append("itemQuantity", String(item.quantity))
