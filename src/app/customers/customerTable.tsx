@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
 import { deleteCustomer } from "../../lib/customers"
@@ -10,7 +9,7 @@ import DeleteConfirmationModal from "../components/DeleteConfirmationModal"
 interface CustomerTableProps {
   customers: Customer[]
   onEdit: (customer: Customer) => void
-  onDelete: () => void // This is the callback to refresh the list
+  onDelete: () => void
 }
 
 export default function CustomerTable({
@@ -18,7 +17,6 @@ export default function CustomerTable({
   onEdit,
   onDelete,
 }: CustomerTableProps) {
-  const router = useRouter()
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
   const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(
     null
@@ -70,10 +68,6 @@ export default function CustomerTable({
     e.stopPropagation()
     onEdit(customer)
     window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  const handleRowClick = (id: string) => {
-    router.push(`/customers/${id}`)
   }
 
   return (
@@ -135,7 +129,6 @@ export default function CustomerTable({
                 <tr
                   key={customer.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                  onClick={() => handleRowClick(customer.id)}
                 >
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                     {customer.name}
