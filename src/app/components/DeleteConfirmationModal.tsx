@@ -29,7 +29,7 @@ export default function DeleteConfirmationModal({
           onClick={onCancel}
         ></div>
 
-        <div className="relative z-10 w-full max-w-xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl transition-all">
+        <div className="relative z-10 w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl transition-all">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               {title}
