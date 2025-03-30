@@ -21,10 +21,10 @@ import { usePathname } from "next/navigation"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
-  { name: "Customers", href: "/customers", icon: UsersIcon },
-  { name: "Quotations", href: "/quotations", icon: UsersIcon },
-  { name: "Agreements", href: "/agreements", icon: FolderIcon },
   { name: "Invoices", href: "/invoices", icon: CalendarIcon },
+  { name: "Quotations", href: "/quotations", icon: UsersIcon },
+  { name: "Customers", href: "/customers", icon: UsersIcon },
+  { name: "Agreements", href: "/agreements", icon: FolderIcon },
   { name: "Privacy", href: "/privacy", icon: DocumentDuplicateIcon },
 ]
 
