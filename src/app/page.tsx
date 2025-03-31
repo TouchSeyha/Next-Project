@@ -42,15 +42,20 @@ import {
   CustomTooltip,
   chartCommonProps
 } from "@/utils/chartConfig"
+import {
+  CurrencyDollarIcon,
+  ClockIcon,
+  UserGroupIcon,
+  DocumentChartBarIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline'
 
 export default function Home() {
-  // State for data
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [quotations, setQuotations] = useState<Quotation[]>([])
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  // State for dashboard stats and charts
   const [stats, setStats] = useState<DashboardStats>({
     totalInvoices: 0,
     totalQuotations: 0,
@@ -60,7 +65,6 @@ export default function Home() {
     averageInvoiceValue: 0,
   })
 
-  // Chart data states
   const [revenueData, setRevenueData] = useState<RevenueData[]>([])
   const [statusData, setStatusData] = useState<StatusData[]>([])
   const [customerData, setCustomerData] = useState<CustomerData[]>([])
@@ -72,7 +76,6 @@ export default function Home() {
     const loadData = async () => {
       setLoading(true)
       try {
-        // Fetch data
         const invoiceData = await getInvoices()
         const quotationData = await getQuotations()
         const customerData = await getCustomers()
@@ -107,7 +110,6 @@ export default function Home() {
     loadData()
   }, [])
 
-  // Loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -149,17 +151,13 @@ export default function Home() {
                   </h3>
                 </div>
                 <div className="h-12 w-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <CurrencyDollarIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                 </div>
               </div>
               <div className="mt-4">
                 <p className="text-gray-600 dark:text-gray-300 text-sm flex items-center">
                   <span className="inline-block h-4 w-4 text-green-500 mr-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
-                    </svg>
+                    <ArrowTrendingUpIcon className="h-4 w-4" />
                   </span>
                   From {stats.totalInvoices} invoices
                 </p>
@@ -179,9 +177,7 @@ export default function Home() {
                   </h3>
                 </div>
                 <div className="h-12 w-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <ClockIcon className="h-6 w-6 text-orange-500 dark:text-orange-400" />
                 </div>
               </div>
               <div className="mt-4">
@@ -204,9 +200,7 @@ export default function Home() {
                   </h3>
                 </div>
                 <div className="h-12 w-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+                  <UserGroupIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
               </div>
               <div className="mt-4">
@@ -229,9 +223,7 @@ export default function Home() {
                   </h3>
                 </div>
                 <div className="h-12 w-12 bg-cyan-100 dark:bg-cyan-900 rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
+                  <DocumentChartBarIcon className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
               </div>
               <div className="mt-4">
