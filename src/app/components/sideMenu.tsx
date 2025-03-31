@@ -15,6 +15,7 @@ import {
   HomeIcon,
   UsersIcon,
   XMarkIcon,
+  ClipboardDocumentIcon,
 } from "@heroicons/react/24/outline"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -22,7 +23,7 @@ import { usePathname } from "next/navigation"
 const navigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
   { name: "Invoices", href: "/invoices", icon: CalendarIcon },
-  { name: "Quotations", href: "/quotations", icon: UsersIcon },
+  { name: "Quotations", href: "/quotations", icon: ClipboardDocumentIcon },
   { name: "Customers", href: "/customers", icon: UsersIcon },
   { name: "Agreements", href: "/agreements", icon: FolderIcon },
   { name: "Privacy", href: "/privacy", icon: DocumentDuplicateIcon },
