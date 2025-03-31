@@ -32,7 +32,7 @@ const user = {
   name: "Touch Seyha",
   email: "example@gmail.com",
   image:
-    "https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0",
+    "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1743388602~exp=1743392202~hmac=b9cfa3a97d8231699c9bf638915e4e2ac9847db2613e32dcb7552d1af816efb9&w=740",
 }
 
 function classNames(
@@ -76,11 +76,7 @@ export default function SideMenu() {
             </TransitionChild>
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
               <div className="flex h-16 shrink-0 items-center">
-                <img
-                  alt="Your Company"
-                  src="https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0"
-                  className="h-8 w-8"
-                />
+                <h1>IT Step Academy</h1>
               </div>
               <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -119,11 +115,7 @@ export default function SideMenu() {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
           <div className="flex h-16 shrink-0 items-center">
-            <img
-              alt="Your Company"
-              src="https://ugc.production.linktr.ee/nUmk2Q2SVuBk2ZGGtBvz_gGET1n3E7YHq6u3K?io=true&size=avatar-v3_0"
-              className="h-8 w-auto"
-            />
+            <h1>IT Step Academy System Project</h1>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
