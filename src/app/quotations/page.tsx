@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { getQuotations, getCustomers } from "@/lib/quotations"
-import { Button } from "@headlessui/react"
+import { Button, Input } from "@headlessui/react"
 import { QuotationTable } from "./quotationTable"
 import { QuotationForm } from "./quotationForm"
 import { Customer, Quotation } from "../types/quotation"
@@ -17,6 +17,7 @@ export default function Quotations() {
   const [editingQuotation, setEditingQuotation] = useState<Quotation | null>(
     null
   )
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     const loadData = async () => {
@@ -56,6 +57,20 @@ export default function Quotations() {
     setEditingQuotation(null)
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const filteredQuotations = quotations.filter((quotation) => {
+    const search = searchTerm.toLowerCase()
+    return (
+      quotation.number.toLowerCase().includes(search) ||
+      quotation.customer.name.toLowerCase().includes(search) ||
+      quotation.status.toLowerCase().includes(search) ||
+      (quotation.notes && quotation.notes.toLowerCase().includes(search))
+    )
+  })
+
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -67,7 +82,14 @@ export default function Quotations() {
             A list of all quotations in your account
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        <div className="mt-4 sm:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
+          <Input
+            type="text"
+            placeholder="Search quotations..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full p-2 sm:w-72 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+          />
           {editingQuotation ? (
             <Button
               onClick={handleCancelForm}
@@ -119,7 +141,7 @@ export default function Quotations() {
           <p>Loading quotations...</p>
         ) : (
           <QuotationTable
-            quotations={quotations}
+            quotations={filteredQuotations}
             customers={customers}
             onEdit={handleEditQuotation}
             onDelete={handleDeleteQuotation}

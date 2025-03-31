@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { getInvoices, getCustomers, getQuotations } from "@/lib/invoices"
-import { Button } from "@headlessui/react"
+import { Button, Input } from "@headlessui/react"
 import { InvoiceTable } from "./invoicesTable"
 import { InvoiceForm } from "./invoicesForm"
 import { Customer, Quotation, Invoice } from "../types/invoice"
@@ -16,6 +16,7 @@ export default function Invoices() {
   const [quotations, setQuotations] = useState<Quotation[]>([])
   const [loading, setLoading] = useState(true)
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     const loadData = async () => {
@@ -58,6 +59,20 @@ export default function Invoices() {
     setEditingInvoice(null)
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const filteredInvoices = invoices.filter((invoice) => {
+    const search = searchTerm.toLowerCase()
+    return (
+      invoice.number.toLowerCase().includes(search) ||
+      invoice.customer.name.toLowerCase().includes(search) ||
+      invoice.status.toLowerCase().includes(search) ||
+      (invoice.notes && invoice.notes.toLowerCase().includes(search))
+    )
+  })
+
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -69,7 +84,14 @@ export default function Invoices() {
             A list of all invoices in your account
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        <div className="mt-4 sm:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
+          <Input
+            type="text"
+            placeholder="Search invoices..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full p-2 sm:w-72 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+          />
           {editingInvoice ? (
             <Button
               onClick={handleCancelForm}
@@ -122,7 +144,7 @@ export default function Invoices() {
           <p className="text-center py-4">Loading invoices...</p>
         ) : (
           <InvoiceTable
-            invoices={invoices}
+            invoices={filteredInvoices}
             onEdit={handleEditInvoice}
             onDelete={handleDeleteInvoice}
           />

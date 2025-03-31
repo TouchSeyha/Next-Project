@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import CustomerTable from "./customerTable"
-import { Button } from "@headlessui/react"
+import { Button, Input } from "@headlessui/react"
 import CustomerTableSkeleton from "./customerTableSkeleton"
 import { getCustomers } from "../../lib/customers"
 import CustomerForm from "./customerForm"
@@ -15,6 +15,7 @@ export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loading, setLoading] = useState(true)
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     const loadCustomers = async () => {
@@ -52,6 +53,20 @@ export default function CustomersPage() {
     setEditingCustomer(null)
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const filteredCustomers = customers.filter((customer) => {
+    const search = searchTerm.toLowerCase()
+    return (
+      customer.name.toLowerCase().includes(search) ||
+      customer.email.toLowerCase().includes(search) ||
+      (customer.phone && customer.phone.toLowerCase().includes(search)) ||
+      (customer.address && customer.address.toLowerCase().includes(search))
+    )
+  })
+
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -63,7 +78,14 @@ export default function CustomersPage() {
             A list of all customers in your account
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        <div className="mt-4 sm:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
+          <Input
+            type="text"
+            placeholder="Search customers..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full p-2 sm:w-72 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+          />
           {editingCustomer ? (
             <Button
               onClick={handleCancelForm}
@@ -114,7 +136,7 @@ export default function CustomersPage() {
           <CustomerTableSkeleton />
         ) : (
           <CustomerTable
-            customers={customers}
+            customers={filteredCustomers}
             onEdit={handleEditCustomer}
             onDelete={handleDeleteCustomer}
           />
