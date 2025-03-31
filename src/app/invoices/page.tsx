@@ -7,6 +7,7 @@ import { Button, Input } from "@headlessui/react"
 import { InvoiceTable } from "./invoicesTable"
 import { InvoiceForm } from "./invoicesForm"
 import { Customer, Quotation, Invoice } from "../types/invoice"
+import { sortOptions, sortAndFilterInvoices } from "../../utils/invoiceSorting"
 
 export default function Invoices() {
   const [isFormVisible, setIsFormVisible] = useState(false)
@@ -17,6 +18,7 @@ export default function Invoices() {
   const [loading, setLoading] = useState(true)
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const [sortOption, setSortOption] = useState<string>(sortOptions[0].value)
 
   useEffect(() => {
     const loadData = async () => {
@@ -63,15 +65,11 @@ export default function Invoices() {
     setSearchTerm(e.target.value)
   }
 
-  const filteredInvoices = invoices.filter((invoice) => {
-    const search = searchTerm.toLowerCase()
-    return (
-      invoice.number.toLowerCase().includes(search) ||
-      invoice.customer.name.toLowerCase().includes(search) ||
-      invoice.status.toLowerCase().includes(search) ||
-      (invoice.notes && invoice.notes.toLowerCase().includes(search))
-    )
-  })
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOption(e.target.value)
+  }
+
+  const filteredInvoices = sortAndFilterInvoices(invoices, sortOption, searchTerm)
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -84,18 +82,31 @@ export default function Invoices() {
             A list of all invoices in your account
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
-          <Input
-            type="text"
-            placeholder="Search invoices..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full p-2 sm:w-72 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
-          />
+        <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-between w-full">
+          <div className="flex flex-col sm:flex-row gap-4 flex-1">
+            <Input
+              type="text"
+              placeholder="Search invoices..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full p-2 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            <select
+              value={sortOption}
+              onChange={handleSortChange}
+              className="w-full sm:w-auto p-2 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+            >
+              {sortOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
           {editingInvoice ? (
             <Button
               onClick={handleCancelForm}
-              className="inline-flex items-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+              className="inline-flex items-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 max-w-[200px] w-full sm:w-auto"
             >
               <XMarkIcon
                 className="-ml-0.5 mr-1.5 h-5 w-5"
@@ -106,7 +117,7 @@ export default function Invoices() {
           ) : (
             <Button
               onClick={() => setIsFormVisible(!isFormVisible)}
-              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-w-[200px] w-full sm:w-auto"
             >
               {isFormVisible ? (
                 "Cancel"

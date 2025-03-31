@@ -8,6 +8,7 @@ import CustomerTableSkeleton from "./customerTableSkeleton"
 import { getCustomers } from "../../lib/customers"
 import CustomerForm from "./customerForm"
 import { Customer } from "../types/customer"
+import { sortOptions, sortAndFilterCustomers } from "../../utils/customerSorting"
 
 export default function CustomersPage() {
   const [isFormVisible, setIsFormVisible] = useState(false)
@@ -16,6 +17,7 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true)
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const [sortOption, setSortOption] = useState<string>(sortOptions[0].value)
 
   useEffect(() => {
     const loadCustomers = async () => {
@@ -57,15 +59,11 @@ export default function CustomersPage() {
     setSearchTerm(e.target.value)
   }
 
-  const filteredCustomers = customers.filter((customer) => {
-    const search = searchTerm.toLowerCase()
-    return (
-      customer.name.toLowerCase().includes(search) ||
-      customer.email.toLowerCase().includes(search) ||
-      (customer.phone && customer.phone.toLowerCase().includes(search)) ||
-      (customer.address && customer.address.toLowerCase().includes(search))
-    )
-  })
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOption(e.target.value)
+  }
+
+  const filteredCustomers = sortAndFilterCustomers(customers, sortOption, searchTerm)
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -78,18 +76,31 @@ export default function CustomersPage() {
             A list of all customers in your account
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
-          <Input
-            type="text"
-            placeholder="Search customers..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full p-2 sm:w-72 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
-          />
+        <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-between w-full">
+          <div className="flex flex-col sm:flex-row gap-4 flex-1">
+            <Input
+              type="text"
+              placeholder="Search customers..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full p-2 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            <select
+              value={sortOption}
+              onChange={handleSortChange}
+              className="w-full sm:w-auto p-2 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500"
+            >
+              {sortOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
           {editingCustomer ? (
             <Button
               onClick={handleCancelForm}
-              className="inline-flex items-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+              className="inline-flex items-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 max-w-[200px] w-full sm:w-auto"
             >
               <XMarkIcon
                 className="-ml-0.5 mr-1.5 h-5 w-5"
@@ -100,7 +111,7 @@ export default function CustomersPage() {
           ) : (
             <Button
               onClick={() => setIsFormVisible(!isFormVisible)}
-              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-w-[200px] w-full sm:w-auto"
             >
               {isFormVisible ? (
                 "Cancel"
